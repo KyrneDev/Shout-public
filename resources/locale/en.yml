@@ -1,0 +1,29 @@
+kyrne-shout:
+  forum:
+    dropdown:
+      tooltip: Conversations
+    setup:
+      title: Setup Private Messaging
+      header_setup: Enter your login password to setup private messaging.
+      header_import: Enter your login password to import your private messages.
+      button_import: Import
+      button_setup: Setup
+      success: Private messaging is now ready, your page will now reload...
+    modal:
+      title: Start Conversation
+      help: Start typing a username to start a chat.
+      search_recipients: Enter username...
+      submit: Send & Start Conversation
+      copied: Your message has been copied to the clipboard.
+      already: "You already have a conversation with {username}."
+    user_modal_alert: "{username} has private messaging setup, their password cannot be safely changed."
+    chat:
+      chat_with: "Chat with {username}"
+      messages_multiple: "{count} total messages"
+      messages_single: New conversation
+      start: Start Conversation
+      text_placeholder: Type your message
+      send: Send Message
+      cant_send: "You can't send a message until {username} responds (first message only)"
+      failed_to_decrypt: "[Failed to decrypt]"
+      start_of_conversation: Start of Conversation

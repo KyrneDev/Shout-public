@@ -32,11 +32,11 @@
     },
     "extra": {
         "flarum-extension": {
-            "title": "Shout",
+            "title": "Kyrne Shout",
             "icon": {
                 "name": "fas fa-comments",
-                "backgroundColor": "#2196F3",
-                "color": "#E040FB"
+                "background": "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(224,64,251,1) 0%, rgba(33,150,243,1) 100%)",
+                "color": "#FFF"
             }
         },
         "flagrow": {
