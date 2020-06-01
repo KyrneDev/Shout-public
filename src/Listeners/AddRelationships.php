@@ -20,10 +20,9 @@ use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
-use FoF\Gamification\Api\Controllers\OrderByPointsController;
 use Illuminate\Contracts\Events\Dispatcher;
-use Kyrne\Shout\Api\Serializers\ConversationSerializer;
-use Kyrne\Shout\Conversation;
+use Kyrne\Shout\Api\Serializers\ConversationRecipientSerializer;
+use Kyrne\Shout\ConversationUser;
 
 class AddRelationships
 {
@@ -54,11 +53,8 @@ class AddRelationships
      */
     public function getModelRelationship(GetModelRelationship $event)
     {
-        if ($event->isRelationship(User::class, 'from_conversations')) {
-            return $event->model->hasMany(Conversation::class, 'user_one_id');
-        }
-        if ($event->isRelationship(User::class, 'to_conversations')) {
-            return $event->model->hasMany(Conversation::class, 'user_two_id');
+        if ($event->isRelationship(User::class, 'conversations')) {
+            return $event->model->hasMany(ConversationUser::class, 'user_id');
         }
     }
 
@@ -84,11 +80,8 @@ class AddRelationships
      */
     public function getApiAttributes(GetApiRelationship $event)
     {
-        if ($event->isRelationship(Serializer\UserSerializer::class, 'from_conversations')) {
-            return $event->serializer->hasMany($event->model, ConversationSerializer::class, 'from_conversations');
-        }
-        if ($event->isRelationship(Serializer\UserSerializer::class, 'to_conversations')) {
-            return $event->serializer->hasMany($event->model, ConversationSerializer::class, 'to_conversations');
+        if ($event->isRelationship(Serializer\UserSerializer::class, 'conversations')) {
+            return $event->serializer->hasMany($event->model, ConversationRecipientSerializer::class, 'conversations');
         }
     }
 
@@ -100,15 +93,9 @@ class AddRelationships
         if ($event->isController(Controller\ListUsersController::class)
             || $event->isController(Controller\ShowUserController::class)
             || $event->isController(Controller\CreateUserController::class)
-            || $event->isController(OrderByPointsController::class)
             || $event->isController(Controller\UpdateUserController::class)) {
             $event->addInclude([
-                'from_conversations',
-                'to_conversations',
-                'to_conversations.fromUser',
-                'to_conversations.toUser',
-                'from_conversations.fromUser',
-                'from_conversations.toUser'
+                'conversations',
             ]);
         }
     }

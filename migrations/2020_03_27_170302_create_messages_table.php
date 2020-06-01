@@ -17,6 +17,8 @@ return [
             $table->integer('user_id');
             $table->integer('conversation_id');
             $table->timestamps();
+
+            $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
         });
     },
 

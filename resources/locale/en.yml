@@ -22,6 +22,7 @@ kyrne-shout:
       messages_multiple: "{count} total messages"
       messages_single: New conversation
       start: Start Conversation
+      cant_start: Can't Start Conversation
       text_placeholder: Type your message
       send: Send Message
       cant_send: "You can't send a message until {username} responds (first message only)"
