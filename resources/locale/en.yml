@@ -1,4 +1,7 @@
 kyrne-shout:
+  admin:
+    permissions:
+      start_label: Start private conversations
   forum:
     dropdown:
       tooltip: Conversations
@@ -12,9 +15,11 @@ kyrne-shout:
     modal:
       title: Start Conversation
       help: Start typing a username to start a chat.
+      help_start: "Type your first message. This will be the only message you can send until {username} responds. Click the user to select a different recipient."
       search_recipients: Enter username...
       submit: Send & Start Conversation
       copied: Your message has been copied to the clipboard.
+      more_users: If you don't see the user you are looking for, they don't have private messaging setup.
       already: "You already have a conversation with {username}."
     user_modal_alert: "{username} has private messaging setup, their password cannot be safely changed."
     chat:

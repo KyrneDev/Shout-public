@@ -18,6 +18,7 @@ use Illuminate\Contracts\Bus\Dispatcher as BusDispatcher;
 use Kyrne\Shout\Conversation;
 use Kyrne\Shout\ConversationUser;
 use Kyrne\Shout\Encryption;
+use InvalidArgumentException;
 
 class StartConversationHandler
 {
@@ -40,9 +41,11 @@ class StartConversationHandler
 
         $this->assertCan($actor, 'startConversation');
 
-        $conversationIds = Conversation::with('recipients')
-            ->get()
-            ->where('user_id', $actor->id)
+        if (intval($data['attributes']['recipient']) === intval($actor->id)) {
+            throw new InvalidArgumentException;
+        }
+
+        $conversationIds = ConversationUser::where('user_id', $actor->id)
             ->pluck('conversation_id')
             ->all();
 
@@ -50,11 +53,6 @@ class StartConversationHandler
 
         foreach ($conversationIds as $id) {
             $conversation = conversation::find($id);
-
-            /**die(var_dump($conversation
-                ->recipients()
-                ->pluck('user_id')
-                ->all()));**/
 
             if (in_array($data['attributes']['recipient'], $conversation
                 ->recipients()
