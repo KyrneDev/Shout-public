@@ -1,18 +1,25 @@
+.MessagesPage {
+  .chat, .container.clearfix {
+    width: 100% !important;
+    max-width: unset;
+  }
+}
+
 .MessagesDropdown {
   .tiblock {
     align-items: center;
     display: flex;
-    height: 20px;
-    margin: 10px;
+    height: 23px;
+    margin: 13px;
   }
 
   .tidot {
     -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
-    border-radius: 10px;
+    border-radius: 13px;
     display: inline-block;
-    height: 10px;
+    height: 13px;
     margin-right: 2px;
-    width: 10px;
+    width: 13px;
     background-color: @primary-color;
   }
 
@@ -60,15 +67,24 @@
 
   .container {
     margin: 0 auto;
-    max-width: 690px;
+    max-width: 890px;
     padding: 0;
     background: @control-bg;
     border-radius: @border-radius;
   }
 
-  @media(min-width: @screen-phone-max) {
+  @media(min-width: @screen-desktop-hd) {
     .container {
-      width: 690px;
+      width: 890px;
+    }
+    .chat {
+      width: 690px
+    }
+  }
+
+  @media(@tablet) {
+    .chat {
+      width: 70%
     }
   }
 
@@ -147,7 +163,7 @@
   }
 
   .chat {
-    width: 490px;
+    max-width: 690px;
     float: left;
     background: @body-bg;
     border-radius: @border-radius;
