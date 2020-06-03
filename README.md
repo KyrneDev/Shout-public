@@ -5,4 +5,4 @@ A [Flarum](http://flarum.org) extension. Add private messaging functionality to 
 
 Simple to install, no settings, just set the permission and you're ready to go.
 
-Read all the info here:
+Read all the info here: https://discuss.flarum.org/d/24073-shout-private-messaging-for-flarum
