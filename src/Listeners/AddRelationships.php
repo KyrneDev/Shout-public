@@ -23,6 +23,7 @@ use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Kyrne\Shout\Api\Serializers\ConversationRecipientSerializer;
 use Kyrne\Shout\ConversationUser;
+use Kyrne\Shout\Encryption;
 
 class AddRelationships
 {
@@ -65,6 +66,7 @@ class AddRelationships
         }
         if ($event->isSerializer(Serializer\BasicUserSerializer::class)) {
             $event->attributes['PMSetup'] = (bool) $event->model->PMSetup;
+            $event->attributes['PrekeysExhausted'] = (bool) Encryption::where('user_id', $event->model->id)->pluck('prekeys_exhausted');
         }
         if ($event->isSerializer(Serializer\UserSerializer::class)) {
             if ($event->model->id === $event->actor->id) {

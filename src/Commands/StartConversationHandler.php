@@ -15,10 +15,10 @@ namespace Kyrne\Shout\Commands;
 
 use Flarum\User\AssertPermissionTrait;
 use Illuminate\Contracts\Bus\Dispatcher as BusDispatcher;
+use InvalidArgumentException;
 use Kyrne\Shout\Conversation;
 use Kyrne\Shout\ConversationUser;
 use Kyrne\Shout\Encryption;
-use InvalidArgumentException;
 
 class StartConversationHandler
 {
@@ -84,7 +84,7 @@ class StartConversationHandler
             throw $e;
         }
 
-        foreach (array_merge([$actor->id], (array) $data['attributes']['recipient']) as $recipientId) {
+        foreach (array_merge([$actor->id], (array)$data['attributes']['recipient']) as $recipientId) {
             $recipient = new ConversationUser();
             $recipient->conversation_id = $conversation->id;
             $recipient->user_id = $recipientId;
@@ -96,8 +96,16 @@ class StartConversationHandler
             $recipient->save();
         }
 
-        Encryption::where('user_id', $data['attributes']['recipient'])
-            ->increment('prekey_index');
+        $keys = Encryption::where('user_id', $data['attributes']['recipient'])
+            ->first();
+
+        $keys->increment('prekey_index');
+
+        if ($keys->prekey_index > 47) {
+            $keys->prekeys_exhausted = true;
+        }
+
+        $keys->save();
 
         return $conversation;
     }
