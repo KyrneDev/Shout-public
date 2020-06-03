@@ -27,7 +27,9 @@ class TypingPusherController extends AbstractShowController
         $data = $request->getParsedBody();
 
         if (app()->bound(Pusher::class)) {
-            app(Pusher::class)->trigger('private-user' . $data['userId'], 'typing', []);
+            app(Pusher::class)->trigger('private-user' . $data['userId'], 'typing', [
+                'conversationId' => $data['conversationId']
+            ]);
         }
 
         return true;

@@ -30,6 +30,9 @@ kyrne-shout:
       cant_start: Can't Start Conversation
       text_placeholder: Type your message
       send: Send Message
+      recovery_message: "System message: Encryption sync lost and recovered"
+      failed_message: "Failed to decrypt message, attempting recovery method #{method}"
       cant_send: "You can't send a message until {username} responds (first message only)"
+      cant_send_toomany: "Please wait for {username}'s reply before sending more messages"
       failed_to_decrypt: "[Failed to decrypt]"
       start_of_conversation: Start of Conversation
