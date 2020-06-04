@@ -13,6 +13,8 @@
 namespace Kyrne\Shout\Commands;
 
 
+use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Contracts\Hashing\Hasher;
 use Kyrne\Shout\Encryption;
 
 class SaveEncryptionKeysHandler
@@ -22,7 +24,9 @@ class SaveEncryptionKeysHandler
         $actor = $command->actor;
         $data = $command->data;
 
-        $keys = Encryption::populate($actor, $data['encryptedIdentity'], $data['preKeys'], $data['bundle']);
+        $password = app(SettingsRepositoryInterface::class)->get('kyrne-shout.set_own_password') ?  app(Hasher::class)->make($data['password']) : '';
+
+        $keys = Encryption::populate($actor, $data['encryptedIdentity'], $data['preKeys'], $data['bundle'], $password);
 
         $keys->save();
 

@@ -1,5 +1,8 @@
 kyrne-shout:
   admin:
+    settings:
+      title: Shout Settings
+      set_own_password: "Let users make their own password - SSO Compatibility"
     permissions:
       start_label: Start private conversations
   forum:
@@ -9,8 +12,12 @@ kyrne-shout:
       title: Setup Private Messaging
       header_setup: Enter your account login password to setup private messaging.
       header_import: Enter your account login password to import your private messages.
+      header_set_own: Enter a paassword to setup private messages.
+      passwords_mismatch: The passwords didn't match
+      invalid_password: Your password was incorrect.
       button_import: Import
       button_setup: Setup
+      confirm_password: Confirm Password
       success: Private messaging is now ready, your page will now reload...
     modal:
       title: Start Conversation

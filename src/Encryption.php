@@ -26,7 +26,7 @@ class Encryption extends AbstractModel
 
     protected $hidden = ['private_key'];
 
-    public static function populate($actor, $encryptedIdentity, $prekeys, $bundle)
+    public static function populate($actor, $encryptedIdentity, $prekeys, $bundle, $password)
     {
         $keys = new static;
 
@@ -34,6 +34,7 @@ class Encryption extends AbstractModel
         $keys->identity_key = $encryptedIdentity;
         $keys->prekeys = json_encode($prekeys);
         $keys->bundle_proto = $bundle;
+        $keys->key = $password;
         $keys->created_at = Carbon::now();
 
         return $keys;

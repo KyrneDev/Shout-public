@@ -15,9 +15,12 @@ namespace Kyrne\Shout\Api\Controllers;
 
 use Flarum\Api\Controller\AbstractShowController;
 use Flarum\Api\Serializer\BasicUserSerializer;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\Exception\PermissionDeniedException;
+use Kyrne\Shout\Encryption;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class VerifyPasswordController extends AbstractShowController
 {
@@ -32,10 +35,22 @@ class VerifyPasswordController extends AbstractShowController
 
         $data = $request->getParsedBody();
 
-        if (!$actor->checkPassword($data['password'])) {
-            throw new PermissionDeniedException;
+        if (app(SettingsRepositoryInterface::class)->get('kyrne-shout.set_own_password')) {
+            $encryption = Encryption::where('user_id', $actor->id)->first();
+
+            if ($encryption) {
+                if (app(Hasher::class)->check($data['password'], $encryption->key)) {
+                    return $actor;
+                } else {
+                    throw new PermissionDeniedException;
+                }
+            }
         } else {
-            return $actor;
+            if (!$actor->checkPassword($data['password'])) {
+                throw new PermissionDeniedException;
+            } else {
+                return $actor;
+            }
         }
     }
 }

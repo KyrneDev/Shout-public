@@ -45,7 +45,11 @@ class UpdateMessageEncryptionHandler
             'cipher' => $data['encryptedCipher']
         ]);
 
-        User::find($actor->id)->decrement('unread_messages');
+        $user = User::find($actor->id);
+
+        if ($user->unread_messages > 0) {
+            $user->decrement('unread_messages');
+        }
 
         $message->save();
 
