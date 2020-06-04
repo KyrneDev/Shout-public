@@ -65,8 +65,9 @@ class AddRelationships
             $event->attributes['canMessage'] = $event->actor->can('startConversation');
         }
         if ($event->isSerializer(Serializer\BasicUserSerializer::class)) {
+            $keys = Encryption::where('user_id', $event->model->id)->first();
             $event->attributes['PMSetup'] = (bool) $event->model->PMSetup;
-            $event->attributes['PrekeysExhausted'] = (bool) Encryption::where('user_id', $event->model->id)->first()->prekeys_exhausted;
+            $event->attributes['PrekeysExhausted'] = (bool) $keys ? $keys->prekeys_exhausted : false;
         }
         if ($event->isSerializer(Serializer\UserSerializer::class)) {
             if ($event->model->id === $event->actor->id) {
