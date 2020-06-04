@@ -66,7 +66,7 @@ class AddRelationships
         }
         if ($event->isSerializer(Serializer\BasicUserSerializer::class)) {
             $event->attributes['PMSetup'] = (bool) $event->model->PMSetup;
-            $event->attributes['PrekeysExhausted'] = (bool) Encryption::where('user_id', $event->model->id)->pluck('prekeys_exhausted');
+            $event->attributes['PrekeysExhausted'] = (bool) Encryption::where('user_id', $event->model->id)->first()->prekeys_exhausted;
         }
         if ($event->isSerializer(Serializer\UserSerializer::class)) {
             if ($event->model->id === $event->actor->id) {
