@@ -63,17 +63,15 @@ class AddRelationships
     {
         if ($event->isSerializer(Serializer\ForumSerializer::class)) {
             $event->attributes['canMessage'] = $event->actor->can('startConversation');
-            $event->attributes['shoutOwnPassword'] = (bool) $this->settings->get('kyrne-shout.set_own_password');
+            $event->attributes['shoutOwnPassword'] = (bool)$this->settings->get('kyrne-shout.set_own_password');
         }
         if ($event->isSerializer(Serializer\BasicUserSerializer::class)) {
             $keys = Encryption::where('user_id', $event->model->id)->first();
-            $event->attributes['PMSetup'] = (bool) $event->model->PMSetup;
-            $event->attributes['PrekeysExhausted'] = $keys ? (bool) $keys->prekeys_exhausted : false;
+            $event->attributes['PMSetup'] = (bool)$event->model->PMSetup;
+            $event->attributes['PrekeysExhausted'] = (bool)$keys ? $keys->prekeys_exhausted : false;
         }
-        if ($event->isSerializer(Serializer\UserSerializer::class)) {
-            if ($event->model->id === $event->actor->id) {
-                $event->attributes['unreadMessages'] = $event->model->unread_messages;
-            }
+        if ($event->isSerializer(Serializer\CurrentUserSerializer::class)) {
+            $event->attributes['unreadMessages'] = $event->model->unread_messages;
         }
     }
 
@@ -84,7 +82,7 @@ class AddRelationships
      */
     public function getApiAttributes(GetApiRelationship $event)
     {
-        if ($event->isRelationship(Serializer\UserSerializer::class, 'conversations')) {
+        if ($event->isRelationship(Serializer\CurrentUserSerializer::class, 'conversations')) {
             return $event->serializer->hasMany($event->model, ConversationRecipientSerializer::class, 'conversations');
         }
     }
