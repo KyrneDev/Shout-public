@@ -26,7 +26,7 @@ return [
         ->post('/messages', 'messages.create', Controllers\CreateMessageController::class)
         ->post('/messages/typing', 'message.typing', Controllers\TypingPusherController::class)
         ->patch('/messages/{id}', 'messages.ecnryption.update', Controllers\UpdateMessageEncryptionController::class)
-        ->delete('/messages{id}', 'messages.delete', Controllers\DeleteMessageController::class)
+      //  ->delete('/messages{id}', 'messages.delete', Controllers\DeleteMessageController::class)
         //->patch('/messages/{id}', 'messages.update', Controllers\UpdateMessageController::class)
         ->delete('/messages/{id}', 'messages.delete', Controllers\DeleteMessageController::class)
         ->get('/conversations/{id}', 'conversations.show', Controllers\ShowConversationController::class)
