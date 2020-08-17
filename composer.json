@@ -1,6 +1,6 @@
 {
     "name": "kyrne/shout",
-    "description":  "Private Messaging for Flarum",
+    "description":  "Private Messaging for Flarum.",
     "keywords": [
         "flarum",
         "friendsofflarum",
@@ -10,7 +10,7 @@
         "private message"
     ],
     "type": "flarum-extension",
-    "license": "GPL-3.0-or-later",
+    "license": "MIT",
     "authors": [
         {
           "name": "Charlie K",
@@ -23,7 +23,8 @@
         "source": "https://github.com/kyrne/shout-public"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.12"
+        "flarum/core": "^0.1.0-beta.12",
+        "kyrne/ext-core": "*@dev"
     },
     "autoload": {
         "psr-4": {
@@ -32,15 +33,18 @@
     },
     "extra": {
         "flarum-extension": {
-            "title": "Kyrne Shout",
-            "icon": {
-                "name": "fas fa-comments",
-                "background": "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(224,64,251,1) 0%, rgba(33,150,243,1) 100%)",
-                "color": "#FFF"
+            "title": "Shout",
+            "icon": "fas fa-comments",
+            "info": {
+                "link": "https://discuss.flarum.org/d/24073-shout-private-messaging-for-flarum",
+                "location": "Flarum Commmunity"
+            },
+            "extra": {
+                "icon": "fab fa-github",
+                "link": "https://github.com/kyrnedev/shout-public",
+                "title": "Source",
+                "location": "Github"
             }
-        },
-        "flagrow": {
-            "discuss": ""
         }
     }
 }
