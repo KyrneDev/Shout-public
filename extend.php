@@ -11,9 +11,9 @@ use Kyrne\ExtCore\Extend\AddKyrneCore;
 
 return [
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js'),
+        ->js(__DIR__.'/resources/js/admin.js'),
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist/forum.js')
+        ->js(__DIR__.'/resources/js/forum.js')
         ->css(__DIR__.'/resources/less/extension.less')
         ->route('/messages/{id}', 'messages')
         ->route('/conversations', 'conversation'),
@@ -28,7 +28,7 @@ return [
         ->patch('/messages/{id}', 'messages.ecnryption.update', Controllers\UpdateMessageEncryptionController::class)
         ->delete('/messages{id}', 'messages.delete', Controllers\DeleteMessageController::class)
         //->patch('/messages/{id}', 'messages.update', Controllers\UpdateMessageController::class)
-        //->delete('/messages/{id}', 'messages.delete', Controllers\DeleteMessageController::class)
+        ->delete('/messages/{id}', 'messages.delete', Controllers\DeleteMessageController::class)
         ->get('/conversations/{id}', 'conversations.show', Controllers\ShowConversationController::class)
         ->post('/verifyPassword', 'password.verify', Controllers\VerifyPasswordController::class)
         ->post('/encryption', 'keys.populate', Controllers\SaveEncryptionKeysController::class)
