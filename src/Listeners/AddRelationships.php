@@ -71,7 +71,9 @@ class AddRelationships
             $event->attributes['PrekeysExhausted'] = (bool)$keys ? $keys->prekeys_exhausted : false;
         }
         if ($event->isSerializer(Serializer\CurrentUserSerializer::class)) {
+            $keys = Encryption::where('user_id', $event->model->id)->first();
             $event->attributes['unreadMessages'] = $event->model->unread_messages;
+            $keys ? $event->attributes['PrekeyIndex'] = $keys->prekey_index : 0;
         }
     }
 

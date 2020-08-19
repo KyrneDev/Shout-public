@@ -16,11 +16,11 @@ namespace Kyrne\Shout\Api\Controllers;
 use Flarum\Api\Controller\AbstractCreateController;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Kyrne\Shout\Api\Serializers\KeySerializer;
-use Kyrne\Shout\Commands\SaveEncryptionKeys;
+use Kyrne\Shout\Commands\UpdateKeys;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 
-class SaveEncryptionKeysController extends AbstractCreateController
+class UpdateKeysController extends AbstractCreateController
 {
 
     public $serializer = KeySerializer::class;
@@ -43,7 +43,7 @@ class SaveEncryptionKeysController extends AbstractCreateController
         $actor = $request->getAttribute('actor');
 
         return $this->bus->dispatch(
-            new SaveEncryptionKeys($actor, $request->getParsedBody())
+            new UpdateKeys($actor, $request->getParsedBody())
         );
     }
 }
