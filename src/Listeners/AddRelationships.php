@@ -17,12 +17,10 @@ use Flarum\Api\Event\Serializing;
 use Flarum\Api\Event\WillGetData;
 use Flarum\Api\Serializer;
 use Flarum\Event\GetApiRelationship;
-use Flarum\Event\GetModelRelationship;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Kyrne\Shout\Api\Serializers\ConversationRecipientSerializer;
-use Kyrne\Shout\ConversationUser;
 use Kyrne\Shout\Encryption;
 
 class AddRelationships
@@ -42,21 +40,9 @@ class AddRelationships
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(GetModelRelationship::class, [$this, 'getModelRelationship']);
         $events->listen(GetApiRelationship::class, [$this, 'getApiAttributes']);
         $events->listen(Serializing::class, [$this, 'prepareApiAttributes']);
         $events->listen(WillGetData::class, [$this, 'includeData']);
-    }
-
-    /**
-     * @param GetModelRelationship $event
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getModelRelationship(GetModelRelationship $event)
-    {
-        if ($event->isRelationship(User::class, 'conversations')) {
-            return $event->model->hasMany(ConversationUser::class, 'user_id');
-        }
     }
 
     public function prepareApiAttributes(Serializing $event)

@@ -46,6 +46,14 @@ class ListConversationsController extends AbstractListController
             ->take($limit)
             ->get();
 
+        foreach ($conversations as $conversation) {
+            foreach ($conversation->recipients as $recipient) {
+                if ($recipient->user_id != $actor->id) {
+                    $recipient->cipher = '';
+                }
+            }
+        }
+
         return $conversations;
     }
 }
