@@ -23,8 +23,8 @@
         "source": "https://github.com/kyrne/shout-public"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.12",
-        "kyrne/ext-core": "*@dev"
+        "flarum/core": "^0.1.0-beta.14",
+        "kyrne/ext-core": "^0.1.2"
     },
     "autoload": {
         "psr-4": {
