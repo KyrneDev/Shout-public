@@ -11,9 +11,9 @@ use Kyrne\Shout\Api\Controllers;
 
 return [
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js'),
+        ->js(__DIR__.'/resources/js/admin.js'),
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist/forum.js')
+        ->js(__DIR__.'/resources/js/forum.js')
         ->css(__DIR__.'/resources/less/extension.less')
         ->route('/shout/messages/{id}', 'shout.messages')
         ->route('/shout/conversations', 'shout.conversation'),
