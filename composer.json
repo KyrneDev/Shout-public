@@ -13,18 +13,18 @@
     "license": "MIT",
     "authors": [
         {
-          "name": "Charlie K",
+          "name": "Charlie Kern",
           "email": "Charlie.K@redevs.org",
           "homepage": "https://redevs.org"
         }
     ],
     "support": {
         "issues": "https://github.com/kyrne/shout-public/issues",
-        "source": "https://github.com/kyrne/shout-public"
+        "source": "https://github.com/kyrne/shout-public",
+        "forum":  "https://discuss.flarum.org/d/24073-shout-private-messaging-for-flarum"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.14",
-        "kyrne/ext-core": "^0.1.2"
+        "flarum/core": "^0.1.0-beta.15"
     },
     "autoload": {
         "psr-4": {
@@ -34,17 +34,12 @@
     "extra": {
         "flarum-extension": {
             "title": "Shout",
-            "icon": "fas fa-comments",
-            "info": {
-                "link": "https://discuss.flarum.org/d/24073-shout-private-messaging-for-flarum",
-                "location": "Flarum Commmunity"
+            "icon": {
+                "name": "fas fa-comments",
+                "background": "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(224,64,251,1) 0%, rgba(33,150,243,1) 100%)",
+                "color": "#000"
             },
-            "extra": {
-                "icon": "fab fa-github",
-                "link": "https://github.com/kyrnedev/shout-public",
-                "title": "Source",
-                "location": "Github"
-            }
+            "category": "feature"
         }
     }
 }

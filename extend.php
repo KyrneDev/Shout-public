@@ -8,18 +8,16 @@ use Flarum\Formatter\Event\Configuring;
 use Flarum\User\User;
 use Illuminate\Contracts\Events\Dispatcher;
 use Kyrne\Shout\Api\Controllers;
-use Kyrne\ExtCore\Extend\AddKyrneCore;
 
 return [
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/resources/js/admin.js'),
+        ->js(__DIR__.'/js/dist/admin.js'),
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/resources/js/forum.js')
+        ->js(__DIR__.'/js/dist/forum.js')
         ->css(__DIR__.'/resources/less/extension.less')
         ->route('/shout/messages/{id}', 'shout.messages')
         ->route('/shout/conversations', 'shout.conversation'),
     new Extend\Locales(__DIR__.'/resources/locale'),
-    new AddKyrneCore(),
     (new Extend\Model(User::class))
         ->hasMany('conversations' ,ConversationUser::class, 'user_id'),
     (new Extend\Routes('api'))
