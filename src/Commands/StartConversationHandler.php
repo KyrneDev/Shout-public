@@ -13,7 +13,6 @@
 namespace Kyrne\Shout\Commands;
 
 
-use Flarum\User\AssertPermissionTrait;
 use Illuminate\Contracts\Bus\Dispatcher as BusDispatcher;
 use InvalidArgumentException;
 use Kyrne\Shout\Conversation;
@@ -22,7 +21,6 @@ use Kyrne\Shout\Encryption;
 
 class StartConversationHandler
 {
-    use AssertPermissionTrait;
 
     /**
      * @var BusDispatcher
@@ -39,7 +37,7 @@ class StartConversationHandler
         $actor = $command->actor;
         $data = $command->data;
 
-        $this->assertCan($actor, 'startConversation');
+        $actor->assertCan('startConversation');
 
         if (intval($data['attributes']['recipient']) === intval($actor->id)) {
             throw new InvalidArgumentException;

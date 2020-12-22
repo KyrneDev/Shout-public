@@ -12,20 +12,18 @@
 
 namespace Kyrne\Shout\Commands;
 
-use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Exception\PermissionDeniedException;
 use Kyrne\Shout\Message;
 
 class HideMessageHandler
 {
-    use AssertPermissionTrait;
 
     public function handle(HideMessage $command)
     {
         $actor = $command->actor;
         $messageId = $command->messageId;
 
-        $this->assertCan($actor, 'deleteMessage');
+        $actor->assertCan('deleteMessage');
 
         $message = Message::find($messageId);
 
