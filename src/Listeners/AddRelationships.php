@@ -50,6 +50,7 @@ class AddRelationships
         if ($event->isSerializer(Serializer\ForumSerializer::class)) {
             $event->attributes['canMessage'] = $event->actor->can('startConversation');
             $event->attributes['shoutOwnPassword'] = (bool)$this->settings->get('kyrne-shout.set_own_password');
+            $event->attributes['shoutReturnKey'] = (bool)$this->settings->get('kyrne-shout.return_key');
         }
         if ($event->isSerializer(Serializer\BasicUserSerializer::class)) {
             $keys = Encryption::where('user_id', $event->model->id)->first();
