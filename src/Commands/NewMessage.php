@@ -1,2 +1,2 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\User\User; class NewMessage { public $actor; public $data; public $conversationId; public function __construct(User $spd4bab0, array $sp2b7469, $sp71a176 = null) { $this->actor = $spd4bab0; $this->data = $sp2b7469; $this->conversationId = $sp71a176; } }
+namespace Kyrne\Shout\Commands; use Flarum\User\User; class NewMessage { public $actor; public $data; public $conversationId; public function __construct(User $sp63f786, array $sp369360, $sp046eb0 = null) { $this->actor = $sp63f786; $this->data = $sp369360; $this->conversationId = $sp046eb0; } }
