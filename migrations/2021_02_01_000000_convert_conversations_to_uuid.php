@@ -44,14 +44,10 @@ return [
             \Kyrne\Shout\Message::where('conversation_id', $conversation->oldId)->update(['conversation_id' => $conversation->id]);
             \Kyrne\Shout\ConversationUser::where('conversation_id', $conversation->oldId)->update(['conversation_id' => $conversation->id]);
             $conversation->save();
-            if (\Kyrne\Shout\Conversation::where('id', $conversation->id)->count() > 1) {
-                \Kyrne\Shout\Conversation::where('id', $conversation->id)
-                    ->orderBy('total_messages', 'asc')
-                    ->take(1)
-                    ->delete();
-            }
         }
 
+        \Kyrne\Shout\Conversation::where('total_messages', 0)
+            ->delete();
 
         $messages = \Kyrne\Shout\Message::all();
 
