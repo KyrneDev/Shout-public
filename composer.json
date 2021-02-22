@@ -24,7 +24,8 @@
         "forum":  "https://discuss.flarum.org/d/24073-shout-private-messaging-for-flarum"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.15"
+        "flarum/core": "^0.1.0-beta.15",
+        "ramsey/uuid": "^3.5.2 || ^4"
     },
     "autoload": {
         "psr-4": {
