@@ -10,7 +10,7 @@
         "private message"
     ],
     "type": "flarum-extension",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "authors": [
         {
           "name": "Charlie Kern",
