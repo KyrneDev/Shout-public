@@ -74,6 +74,6 @@ return [
         ->get('/shout/conversations/{id}', 'shout.conversations.show', Controllers\ShowConversationController::class)
         ->post('/shout/verifyPassword', 'shout.password.verify', Controllers\VerifyPasswordController::class)
         ->post('/shout/encryption', 'shout.keys.populate', Controllers\SaveEncryptionKeysController::class)
-        ->patch('/shout/encryption', 'shout.keys.populate', Controllers\UpdateKeysController::class)
+        ->patch('/shout/encryption', 'shout.keys.update', Controllers\UpdateKeysController::class)
         ->get('/shout/encryption/{id}', 'shout.keys.get', Controllers\GetIdentityController::class),
 ];
