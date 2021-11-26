@@ -1,2 +1,25 @@
 <?php
-namespace Kyrne\Shout\Api\Serializers; use Flarum\Api\Serializer\AbstractSerializer; use Flarum\Api\Serializer\BasicUserSerializer; use Kyrne\Shout\Message; class MessageSerializer extends AbstractSerializer { protected $type = 'messages'; protected function getDefaultAttributes($sp8afed4) { if (!$sp8afed4 instanceof Message) { throw new \InvalidArgumentException(get_class($this) . ' can only serialize instances of ' . Message::class); } return array('message' => (bool) (!$sp8afed4->is_hidden) ? $sp8afed4->message : '', 'userId' => $sp8afed4->user_id, 'isHidden' => $sp8afed4->is_hidden, 'createdAt' => $this->formatDate($sp8afed4->created_at), 'conversationId' => $sp8afed4->conversation_id); } protected function user($sp8afed4) { return $this->hasOne($sp8afed4, BasicUserSerializer::class); } }
+
+namespace Kyrne\Shout\Api\Serializers;
+
+use Flarum\Api\Serializer\AbstractSerializer;
+use Flarum\Api\Serializer\BasicUserSerializer;
+use Kyrne\Shout\Message;
+
+class MessageSerializer extends AbstractSerializer
+{
+    protected $type = 'messages';
+
+    protected function getDefaultAttributes($response)
+    {
+        if (!$response instanceof Message) {
+            throw new \InvalidArgumentException(get_class($this) . ' can only serialize instances of ' . Message::class);
+        }
+        return array('message' => (bool)(!$response->is_hidden) ? $response->message : '', 'userId' => $response->user_id, 'isHidden' => $response->is_hidden, 'createdAt' => $this->formatDate($response->created_at), 'conversationId' => $response->conversation_id);
+    }
+
+    protected function user($response)
+    {
+        return $this->hasOne($response, BasicUserSerializer::class);
+    }
+}

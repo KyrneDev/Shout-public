@@ -1,2 +1,30 @@
 <?php
-namespace Kyrne\Shout\Api\Controllers; use Flarum\Api\Controller\AbstractCreateController; use Illuminate\Contracts\Bus\Dispatcher; use Illuminate\Support\Arr; use Kyrne\Shout\Api\Serializers\MessageSerializer; use Kyrne\Shout\Commands\NewMessage; use Psr\Http\Message\ServerRequestInterface; use Tobscure\JsonApi\Document; class CreateMessageController extends AbstractCreateController { public $serializer = MessageSerializer::class; public $include = array('user'); protected $bus; public function __construct(Dispatcher $sp9afba9) { $this->bus = $sp9afba9; } protected function data(ServerRequestInterface $sp00f8d1, Document $speb2504) { $sp63f786 = $sp00f8d1->getAttribute('actor'); $sp8afed4 = $this->bus->dispatch(new NewMessage($sp63f786, Arr::get($sp00f8d1->getParsedBody(), 'data', array()))); return $sp8afed4; } }
+
+namespace Kyrne\Shout\Api\Controllers;
+
+use Flarum\Api\Controller\AbstractCreateController;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Arr;
+use Kyrne\Shout\Api\Serializers\MessageSerializer;
+use Kyrne\Shout\Commands\NewMessage;
+use Psr\Http\Message\ServerRequestInterface;
+use Tobscure\JsonApi\Document;
+
+class CreateMessageController extends AbstractCreateController
+{
+    public $serializer = MessageSerializer::class;
+    public $include = array('user');
+    protected $bus;
+
+    public function __construct(Dispatcher $dispatcher)
+    {
+        $this->bus = $dispatcher;
+    }
+
+    protected function data(ServerRequestInterface $request, Document $document)
+    {
+        $actor = $request->getAttribute('actor');
+        $response = $this->bus->dispatch(new NewMessage($actor, Arr::get($request->getParsedBody(), 'data', array())));
+        return $response;
+    }
+}

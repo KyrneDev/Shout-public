@@ -1,2 +1,19 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\User\User; class UpdateMessageEncryption { public $messageId; public $actor; public $data; public function __construct($spdd1457, User $sp63f786, $sp369360) { $this->messageId = $spdd1457; $this->actor = $sp63f786; $this->data = $sp369360; } }
+
+namespace Kyrne\Shout\Commands;
+
+use Flarum\User\User;
+
+class UpdateMessageEncryption
+{
+    public $messageId;
+    public $actor;
+    public $data;
+
+    public function __construct($messageId, User $actor, $data)
+    {
+        $this->messageId = $messageId;
+        $this->actor = $actor;
+        $this->data = $data;
+    }
+}

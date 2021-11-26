@@ -1,2 +1,17 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\User\User; class HideMessage { public $messageId; public $actor; public function __construct($spdd1457, User $sp63f786) { $this->messageId = $spdd1457; $this->actor = $sp63f786; } }
+
+namespace Kyrne\Shout\Commands;
+
+use Flarum\User\User;
+
+class HideMessage
+{
+    public $messageId;
+    public $actor;
+
+    public function __construct($messageId, User $actor)
+    {
+        $this->messageId = $messageId;
+        $this->actor = $actor;
+    }
+}

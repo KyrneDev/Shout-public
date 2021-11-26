@@ -1,2 +1,23 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\Settings\SettingsRepositoryInterface; use Illuminate\Contracts\Hashing\Hasher; use Kyrne\Shout\Encryption; class UpdateKeysHandler { public function handle(UpdateKeys $sp07d2ef) { $sp63f786 = $sp07d2ef->actor; $sp369360 = $sp07d2ef->data; $spaaa5dd = Encryption::where('user_id', $sp63f786->id)->firstOrFail(); $spaaa5dd->prekeys = json_encode($sp369360['preKeys']); $spaaa5dd->prekey_index = 0; $spaaa5dd->bundle_proto = $sp369360['bundle']; $spaaa5dd->identity_key = $sp369360['encryptedIdentity']; $spaaa5dd->save(); return $spaaa5dd; } }
+
+namespace Kyrne\Shout\Commands;
+
+use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Contracts\Hashing\Hasher;
+use Kyrne\Shout\Encryption;
+
+class UpdateKeysHandler
+{
+    public function handle(UpdateKeys $newMessage)
+    {
+        $actor = $newMessage->actor;
+        $data = $newMessage->data;
+        $newEncryption = Encryption::where('user_id', $actor->id)->firstOrFail();
+        $newEncryption->prekeys = json_encode($data['preKeys']);
+        $newEncryption->prekey_index = 0;
+        $newEncryption->bundleProto = $data['bundle'];
+        $newEncryption->identity_key = $data['encryptedIdentity'];
+        $newEncryption->save();
+        return $newEncryption;
+    }
+}

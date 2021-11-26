@@ -1,5 +1,5 @@
 {
-    "name": "kyrne/shout",
+    "name": "littlecxm/flarum-shout",
     "description":  "Private Messaging for Flarum.",
     "keywords": [
         "flarum",
@@ -24,8 +24,10 @@
         "forum":  "https://discuss.flarum.org/d/24073-shout-private-messaging-for-flarum"
     },
     "require": {
-        "flarum/core": "^0.1.0-beta.15",
-        "ramsey/uuid": "^3.5.2 || ^4"
+        "flarum/core": "^1.0",
+        "ramsey/uuid": "^3.5.2 || ^4",
+        "ext-json": "*",
+        "flarum/pusher": "^1.1"
     },
     "autoload": {
         "psr-4": {

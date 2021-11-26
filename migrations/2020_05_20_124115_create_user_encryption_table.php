@@ -18,7 +18,7 @@ return [
         $schema->create('user_encryption_keys', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->longText('bundle_proto');
+            $table->longText('bundleProto');
             $table->longText('identity_key');
             $table->longText('prekeys');
             $table->integer('prekey_index')->default(0);
