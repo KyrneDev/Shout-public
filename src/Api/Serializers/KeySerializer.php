@@ -1,2 +1,25 @@
 <?php
-namespace Kyrne\Shout\Api\Serializers; use Flarum\Api\Serializer\AbstractSerializer; use Flarum\Api\Serializer\BasicUserSerializer; use Kyrne\Shout\Encryption; class KeySerializer extends AbstractSerializer { protected $type = 'encryption_keys'; protected function getDefaultAttributes($spaaa5dd) { if (!$spaaa5dd instanceof Encryption) { throw new \InvalidArgumentException(get_class($this) . ' can only serialize instances of ' . Encryption::class); } return array('bundle' => $spaaa5dd->bundle_proto, 'identityKey' => $spaaa5dd->identity_key, 'prekey' => $spaaa5dd->prekey, 'index' => $spaaa5dd->prekey_index, 'prekeysExhausted' => (bool) $spaaa5dd->prekeys_exhausted); } protected function user($spaaa5dd) { return $this->hasOne($spaaa5dd, BasicUserSerializer::class); } }
+
+namespace Kyrne\Shout\Api\Serializers;
+
+use Flarum\Api\Serializer\AbstractSerializer;
+use Flarum\Api\Serializer\BasicUserSerializer;
+use Kyrne\Shout\Encryption;
+
+class KeySerializer extends AbstractSerializer
+{
+    protected $type = 'encryption_keys';
+
+    protected function getDefaultAttributes($newEncryption)
+    {
+        if (!$newEncryption instanceof Encryption) {
+            throw new \InvalidArgumentException(get_class($this) . ' can only serialize instances of ' . Encryption::class);
+        }
+        return array('bundle' => $newEncryption->bundleProto, 'identityKey' => $newEncryption->identity_key, 'prekey' => $newEncryption->prekey, 'index' => $newEncryption->prekey_index, 'prekeysExhausted' => (bool)$newEncryption->prekeys_exhausted);
+    }
+
+    protected function user($newEncryption)
+    {
+        return $this->hasOne($newEncryption, BasicUserSerializer::class);
+    }
+}

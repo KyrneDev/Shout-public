@@ -1,2 +1,26 @@
 <?php
-namespace Kyrne\Shout\Api\Controllers; use Flarum\Api\Controller\AbstractDeleteController; use Illuminate\Contracts\Bus\Dispatcher; use Illuminate\Support\Arr; use Kyrne\Shout\Commands\HideMessage; use Psr\Http\Message\ServerRequestInterface; class DeleteMessageController extends AbstractDeleteController { protected $bus; public function __construct(Dispatcher $sp9afba9) { $this->bus = $sp9afba9; } protected function delete(ServerRequestInterface $sp00f8d1) { $sp9a6e86 = Arr::get($sp00f8d1->getQueryParams(), 'id'); $sp63f786 = $sp00f8d1->getAttribute('actor'); $this->bus->dispatch(new HideMessage($sp9a6e86, $sp63f786)); } }
+
+namespace Kyrne\Shout\Api\Controllers;
+
+use Flarum\Api\Controller\AbstractDeleteController;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Arr;
+use Kyrne\Shout\Commands\HideMessage;
+use Psr\Http\Message\ServerRequestInterface;
+
+class DeleteMessageController extends AbstractDeleteController
+{
+    protected $bus;
+
+    public function __construct(Dispatcher $dispatcher)
+    {
+        $this->bus = $dispatcher;
+    }
+
+    protected function delete(ServerRequestInterface $request)
+    {
+        $encryptionKeyId = Arr::get($request->getQueryParams(), 'id');
+        $actor = $request->getAttribute('actor');
+        $this->bus->dispatch(new HideMessage($encryptionKeyId, $actor));
+    }
+}

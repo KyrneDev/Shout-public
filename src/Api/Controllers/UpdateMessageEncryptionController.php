@@ -1,2 +1,29 @@
 <?php
-namespace Kyrne\Shout\Api\Controllers; use Flarum\Api\Controller\AbstractShowController; use Illuminate\Contracts\Bus\Dispatcher; use Illuminate\Support\Arr; use Kyrne\Shout\Api\Serializers\MessageSerializer; use Kyrne\Shout\Commands\UpdateMessageEncryption; use Psr\Http\Message\ServerRequestInterface; use Tobscure\JsonApi\Document; class UpdateMessageEncryptionController extends AbstractShowController { public $serializer = MessageSerializer::class; protected $bus; public function __construct(Dispatcher $sp9afba9) { $this->bus = $sp9afba9; } protected function data(ServerRequestInterface $sp00f8d1, Document $speb2504) { $sp9a6e86 = Arr::get($sp00f8d1->getQueryParams(), 'id'); $sp63f786 = $sp00f8d1->getAttribute('actor'); return $this->bus->dispatch(new UpdateMessageEncryption($sp9a6e86, $sp63f786, $sp00f8d1->getParsedBody())); } }
+
+namespace Kyrne\Shout\Api\Controllers;
+
+use Flarum\Api\Controller\AbstractShowController;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Arr;
+use Kyrne\Shout\Api\Serializers\MessageSerializer;
+use Kyrne\Shout\Commands\UpdateMessageEncryption;
+use Psr\Http\Message\ServerRequestInterface;
+use Tobscure\JsonApi\Document;
+
+class UpdateMessageEncryptionController extends AbstractShowController
+{
+    public $serializer = MessageSerializer::class;
+    protected $bus;
+
+    public function __construct(Dispatcher $dispatcher)
+    {
+        $this->bus = $dispatcher;
+    }
+
+    protected function data(ServerRequestInterface $request, Document $document)
+    {
+        $encryptionKeyId = Arr::get($request->getQueryParams(), 'id');
+        $actor = $request->getAttribute('actor');
+        return $this->bus->dispatch(new UpdateMessageEncryption($encryptionKeyId, $actor, $request->getParsedBody()));
+    }
+}

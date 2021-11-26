@@ -1,2 +1,33 @@
 <?php
-namespace Kyrne\Shout\Api\Serializers; use Flarum\Api\Serializer\AbstractSerializer; use Kyrne\Shout\Conversation; class ConversationSerializer extends AbstractSerializer { protected $type = 'conversations'; protected function getDefaultAttributes($spad5e71) { if (!$spad5e71 instanceof Conversation) { throw new \InvalidArgumentException(get_class($this) . ' can only serialize instances of ' . Conversation::class); } return array('status' => json_decode($spad5e71->status), 'createdAt' => $this->formatDate($spad5e71->created_at), 'updatedAt' => $this->formatDate($spad5e71->created_at), 'totalMessages' => $spad5e71->total_messages, 'notNew' => (bool) $spad5e71->notNew, 'unReadCount' => $spad5e71->messages()->get()->filter(function ($sp8afed4) { if (!$sp8afed4->is_seen) { return $sp8afed4; } })->count()); } protected function messages($spad5e71) { return $this->hasMany($spad5e71, MessageSerializer::class); } protected function recipients($spad5e71) { return $this->hasMany($spad5e71, ConversationRecipientSerializer::class); } }
+
+namespace Kyrne\Shout\Api\Serializers;
+
+use Flarum\Api\Serializer\AbstractSerializer;
+use Kyrne\Shout\Conversation;
+
+class ConversationSerializer extends AbstractSerializer
+{
+    protected $type = 'conversations';
+
+    protected function getDefaultAttributes($conversation)
+    {
+        if (!$conversation instanceof Conversation) {
+            throw new \InvalidArgumentException(get_class($this) . ' can only serialize instances of ' . Conversation::class);
+        }
+        return array('status' => json_decode($conversation->status), 'createdAt' => $this->formatDate($conversation->created_at), 'updatedAt' => $this->formatDate($conversation->created_at), 'totalMessages' => $conversation->total_messages, 'notNew' => (bool)$conversation->notNew, 'unReadCount' => $conversation->messages()->get()->filter(function ($response) {
+            if (!$response->is_seen) {
+                return $response;
+            }
+        })->count());
+    }
+
+    protected function messages($conversation)
+    {
+        return $this->hasMany($conversation, MessageSerializer::class);
+    }
+
+    protected function recipients($conversation)
+    {
+        return $this->hasMany($conversation, ConversationRecipientSerializer::class);
+    }
+}

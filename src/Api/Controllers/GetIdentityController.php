@@ -1,2 +1,31 @@
 <?php
-namespace Kyrne\Shout\Api\Controllers; use Flarum\Api\Controller\AbstractShowController; use Flarum\Http\AccessToken; use Illuminate\Support\Arr; use Kyrne\Shout\Api\Serializers\KeySerializer; use Kyrne\Shout\Encryption; use Psr\Http\Message\ServerRequestInterface; use Tobscure\JsonApi\Document; class GetIdentityController extends AbstractShowController { public $serializer = KeySerializer::class; protected function data(ServerRequestInterface $sp00f8d1, Document $speb2504) { $sp2f80ef = Arr::get($sp00f8d1->getQueryParams(), 'id'); $sp63f786 = $sp00f8d1->getAttribute('actor'); if (intval($sp2f80ef) === intval($sp63f786->id)) { return Encryption::where('user_id', $sp63f786->id)->firstOrFail(); } else { $spaaa5dd = Encryption::where('user_id', $sp2f80ef)->firstOrFail(); $spaaa5dd->identity_key = null; $spaaa5dd->prekey = json_decode($spaaa5dd->prekeys)[$spaaa5dd->prekey_index]; $spaaa5dd->prekeys = null; return $spaaa5dd; } } }
+
+namespace Kyrne\Shout\Api\Controllers;
+
+use Flarum\Api\Controller\AbstractShowController;
+use Flarum\Http\AccessToken;
+use Illuminate\Support\Arr;
+use Kyrne\Shout\Api\Serializers\KeySerializer;
+use Kyrne\Shout\Encryption;
+use Psr\Http\Message\ServerRequestInterface;
+use Tobscure\JsonApi\Document;
+
+class GetIdentityController extends AbstractShowController
+{
+    public $serializer = KeySerializer::class;
+
+    protected function data(ServerRequestInterface $request, Document $document)
+    {
+        $userId = Arr::get($request->getQueryParams(), 'id');
+        $actor = $request->getAttribute('actor');
+        if (intval($userId) === intval($actor->id)) {
+            return Encryption::where('user_id', $actor->id)->firstOrFail();
+        } else {
+            $newEncryption = Encryption::where('user_id', $userId)->firstOrFail();
+            $newEncryption->identity_key = null;
+            $newEncryption->prekey = json_decode($newEncryption->prekeys)[$newEncryption->prekey_index];
+            $newEncryption->prekeys = null;
+            return $newEncryption;
+        }
+    }
+}

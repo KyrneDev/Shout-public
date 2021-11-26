@@ -1,2 +1,36 @@
 <?php
-namespace Kyrne\Shout\Api\Controllers; use Flarum\Api\Controller\AbstractListController; use Kyrne\Shout\Api\Serializers\MessageSerializer; use Tobscure\JsonApi\Document; use Flarum\User\Exception\PermissionDeniedException; use Illuminate\Support\Arr; use Kyrne\Shout\Conversation; use Kyrne\Shout\Message; use Psr\Http\Message\ServerRequestInterface; class ListMessagesController extends AbstractListController { public $serializer = MessageSerializer::class; public $include = array('user'); protected function data(ServerRequestInterface $sp00f8d1, Document $speb2504) { $sp046eb0 = Arr::get($sp00f8d1->getQueryParams(), 'id'); $sp63f786 = $sp00f8d1->getAttribute('actor'); $sp76da0a = $this->extractLimit($sp00f8d1); $sp0c0233 = $sp00f8d1->getQueryParams()['offset']; $spad5e71 = Conversation::find($sp046eb0); if (!$spad5e71->recipients()->where('user_id', $sp63f786->id)->get()) { throw new PermissionDeniedException(); } $spc2223a = Message::where('conversation_id', $sp046eb0)->orderBy('created_at', 'desc')->skip($sp0c0233)->take($sp76da0a)->get(); $sp9a6e86 = $sp63f786->id; foreach ($spc2223a as $sp8afed4) { $sp8afed4->message = json_decode($sp8afed4->message)->{$sp9a6e86}; } return $spc2223a; } }
+
+namespace Kyrne\Shout\Api\Controllers;
+
+use Flarum\Api\Controller\AbstractListController;
+use Kyrne\Shout\Api\Serializers\MessageSerializer;
+use Tobscure\JsonApi\Document;
+use Flarum\User\Exception\PermissionDeniedException;
+use Illuminate\Support\Arr;
+use Kyrne\Shout\Conversation;
+use Kyrne\Shout\Message;
+use Psr\Http\Message\ServerRequestInterface;
+
+class ListMessagesController extends AbstractListController
+{
+    public $serializer = MessageSerializer::class;
+    public $include = array('user');
+
+    protected function data(ServerRequestInterface $request, Document $document)
+    {
+        $conversationId = Arr::get($request->getQueryParams(), 'id');
+        $actor = $request->getAttribute('actor');
+        $limit = $this->extractLimit($request);
+        $offset = $request->getQueryParams()['offset'];
+        $conversation = Conversation::find($conversationId);
+        if (!$conversation->recipients()->where('user_id', $actor->id)->get()) {
+            throw new PermissionDeniedException();
+        }
+        $messages = Message::where('conversation_id', $conversationId)->orderBy('created_at', 'desc')->skip($offset)->take($limit)->get();
+        $encryptionKeyId = $actor->id;
+        foreach ($messages as $response) {
+            $response->message = json_decode($response->message)->{$encryptionKeyId};
+        }
+        return $messages;
+    }
+}

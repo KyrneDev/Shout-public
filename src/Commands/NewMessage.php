@@ -1,2 +1,19 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\User\User; class NewMessage { public $actor; public $data; public $conversationId; public function __construct(User $sp63f786, array $sp369360, $sp046eb0 = null) { $this->actor = $sp63f786; $this->data = $sp369360; $this->conversationId = $sp046eb0; } }
+
+namespace Kyrne\Shout\Commands;
+
+use Flarum\User\User;
+
+class NewMessage
+{
+    public $actor;
+    public $data;
+    public $conversationId;
+
+    public function __construct(User $actor, array $data, $conversationId = null)
+    {
+        $this->actor = $actor;
+        $this->data = $data;
+        $this->conversationId = $conversationId;
+    }
+}

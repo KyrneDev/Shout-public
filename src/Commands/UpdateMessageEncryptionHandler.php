@@ -1,2 +1,37 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\User\Exception\PermissionDeniedException; use Flarum\User\User; use Kyrne\Shout\Conversation; use Kyrne\Shout\ConversationUser; use Kyrne\Shout\Message; class UpdateMessageEncryptionHandler { public function handle(UpdateMessageEncryption $sp07d2ef) { $sp63f786 = $sp07d2ef->actor; $sp369360 = $sp07d2ef->data; $spdd1457 = $sp07d2ef->messageId; $sp8afed4 = Message::findOrFail($spdd1457); $spad5e71 = Conversation::findOrFail($sp8afed4->conversation_id); if (!$spad5e71->recipients()->where('user_id', $sp63f786->id)->get()) { throw new PermissionDeniedException(); } $sp2d38d2 = $sp63f786->id; $spd59ffe = json_decode($sp8afed4->message); $spd59ffe->{$sp2d38d2} = $sp369360['message']; $sp8afed4->message = json_encode($spd59ffe); ConversationUser::where(array(array('user_id', $sp63f786->id), array('conversation_id', $spad5e71->id)))->update(array('cipher' => $sp369360['encryptedCipher'])); $sp0faaa1 = User::find($sp63f786->id); if ($sp0faaa1->unread_messages > 0) { $sp0faaa1->decrement('unread_messages'); } $sp8afed4->save(); $sp9a6e86 = $sp63f786->id; $sp8afed4->message = json_decode($sp8afed4->message)->{$sp9a6e86}; return $sp8afed4; } }
+
+namespace Kyrne\Shout\Commands;
+
+use Flarum\User\Exception\PermissionDeniedException;
+use Flarum\User\User;
+use Kyrne\Shout\Conversation;
+use Kyrne\Shout\ConversationUser;
+use Kyrne\Shout\Message;
+
+class UpdateMessageEncryptionHandler
+{
+    public function handle(UpdateMessageEncryption $newMessage)
+    {
+        $actor = $newMessage->actor;
+        $data = $newMessage->data;
+        $messageId = $newMessage->messageId;
+        $response = Message::findOrFail($messageId);
+        $conversation = Conversation::findOrFail($response->conversation_id);
+        if (!$conversation->recipients()->where('user_id', $actor->id)->get()) {
+            throw new PermissionDeniedException();
+        }
+        $sp2d38d2 = $actor->id;
+        $spd59ffe = json_decode($response->message);
+        $spd59ffe->{$sp2d38d2} = $data['message'];
+        $response->message = json_encode($spd59ffe);
+        ConversationUser::where(array(array('user_id', $actor->id), array('conversation_id', $conversation->id)))->update(array('cipher' => $data['encryptedCipher']));
+        $sp0faaa1 = User::find($actor->id);
+        if ($sp0faaa1->unread_messages > 0) {
+            $sp0faaa1->decrement('unread_messages');
+        }
+        $response->save();
+        $encryptionKeyId = $actor->id;
+        $response->message = json_decode($response->message)->{$encryptionKeyId};
+        return $response;
+    }
+}

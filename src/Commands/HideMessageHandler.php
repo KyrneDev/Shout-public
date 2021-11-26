@@ -1,2 +1,22 @@
 <?php
-namespace Kyrne\Shout\Commands; use Flarum\User\Exception\PermissionDeniedException; use Kyrne\Shout\Message; class HideMessageHandler { public function handle(HideMessage $sp07d2ef) { $sp63f786 = $sp07d2ef->actor; $spdd1457 = $sp07d2ef->messageId; $sp63f786->assertCan('deleteMessage'); $sp8afed4 = Message::find($spdd1457); if ($sp63f786->id != $sp8afed4->user_id) { throw new PermissionDeniedException(); } $sp8afed4->is_hidden = true; $sp8afed4->save(); } }
+
+namespace Kyrne\Shout\Commands;
+
+use Flarum\User\Exception\PermissionDeniedException;
+use Kyrne\Shout\Message;
+
+class HideMessageHandler
+{
+    public function handle(HideMessage $newMessage)
+    {
+        $actor = $newMessage->actor;
+        $messageId = $newMessage->messageId;
+        $actor->assertCan('deleteMessage');
+        $response = Message::find($messageId);
+        if ($actor->id != $response->user_id) {
+            throw new PermissionDeniedException();
+        }
+        $response->is_hidden = true;
+        $response->save();
+    }
+}

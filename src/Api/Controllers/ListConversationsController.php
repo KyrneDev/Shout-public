@@ -1,2 +1,35 @@
 <?php
-namespace Kyrne\Shout\Api\Controllers; use Flarum\Api\Controller\AbstractListController; use Kyrne\Shout\Api\Serializers\ConversationSerializer; use Kyrne\Shout\Conversation; use Psr\Http\Message\ServerRequestInterface; use Tobscure\JsonApi\Document; class ListConversationsController extends AbstractListController { public $serializer = ConversationSerializer::class; public $include = array('recipients', 'recipients.user'); public $limit = 12; public $maxLimit = 12; protected function data(ServerRequestInterface $sp00f8d1, Document $speb2504) { $sp63f786 = $sp00f8d1->getAttribute('actor'); $sp76da0a = $this->extractLimit($sp00f8d1); $sp0c0233 = array_key_exists('offset', $sp00f8d1->getQueryParams()) ? $sp00f8d1->getQueryParams()['offset'] : 0; $sp7ad983 = Conversation::whereHas('recipients', function ($spf734ef) use($sp63f786) { $spf734ef->where('user_id', $sp63f786->id); })->orderBy('updated_at', 'desc')->skip($sp0c0233)->take($sp76da0a)->get(); foreach ($sp7ad983 as $spad5e71) { foreach ($spad5e71->recipients as $sp5bdfea) { if ($sp5bdfea->user_id != $sp63f786->id) { $sp5bdfea->cipher = ''; } } } return $sp7ad983; } }
+
+namespace Kyrne\Shout\Api\Controllers;
+
+use Flarum\Api\Controller\AbstractListController;
+use Kyrne\Shout\Api\Serializers\ConversationSerializer;
+use Kyrne\Shout\Conversation;
+use Psr\Http\Message\ServerRequestInterface;
+use Tobscure\JsonApi\Document;
+
+class ListConversationsController extends AbstractListController
+{
+    public $serializer = ConversationSerializer::class;
+    public $include = array('recipients', 'recipients.user');
+    public $limit = 12;
+    public $maxLimit = 12;
+
+    protected function data(ServerRequestInterface $request, Document $document)
+    {
+        $actor = $request->getAttribute('actor');
+        $limit = $this->extractLimit($request);
+        $offset = array_key_exists('offset', $request->getQueryParams()) ? $request->getQueryParams()['offset'] : 0;
+        $conversations = Conversation::whereHas('recipients', function ($conversation) use ($actor) {
+            $conversation->where('user_id', $actor->id);
+        })->orderBy('updated_at', 'desc')->skip($offset)->take($limit)->get();
+        foreach ($conversations as $conversation) {
+            foreach ($conversation->recipients as $recipient) {
+                if ($recipient->user_id != $actor->id) {
+                    $recipient->cipher = '';
+                }
+            }
+        }
+        return $conversations;
+    }
+}
